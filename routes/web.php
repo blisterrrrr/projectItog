@@ -14,5 +14,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $tasks = \App\Models\Task::paginate(16);
+    return view('main', [
+        'tasks' => $tasks
+    ]);
+})->name('main');
+
+Route::get('/create', function (){
+    return view('create');
+})->name('create');
