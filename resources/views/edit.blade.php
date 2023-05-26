@@ -24,7 +24,7 @@
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                 <li><a href="{{ route('main') }}" class="nav-link px-2 text-white">Задачи</a></li>
-                <li><a href="{{ route('create') }}" class="nav-link px-2 text-secondary">Создать задачу</a></li>
+                <li><a href="{{ route('create') }}" class="nav-link px-2 text-white">Создать задачу</a></li>
             </ul>
 
             <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" role="search">
@@ -40,20 +40,21 @@
     </div>
 </header>
 <main class="form-signin w-100 m-auto">
-    <form method="post" action="{{ route('post.create') }}">
+    <form method="post" action="{{ route('post.edit', $task->id) }}">
         @csrf
         <h1 class="h3 mb-3 fw-normal mt-4" >Create task</h1>
 
         <div class="form-floating mt-2">
-            <input type="text" class="form-control" id="floatingInput" name="name" placeholder="Test">
+            <input type="text" class="form-control" id="floatingInput" name="name" placeholder="Test" value="{{ $task->name }}">
             <label for="floatingInput">Task Name</label>
         </div>
+{{--        @dd($task->desc)--}}
         <div class="form-floating mt-2">
-            <textarea class="form-control" placeholder="Leave a task here" name="desc" id="floatingTextarea"></textarea>
+            <textarea class="form-control" placeholder="Leave a task here" name="desc" id="floatingTextarea">{{ $task->desc }}</textarea>
             <label for="floatingTextarea">Task Description</label>
         </div>
 
-        <button class="w-100 btn btn-lg btn-warning mt-4" type="submit">Public Task!</button>
+        <button class="w-100 btn btn-lg btn-warning mt-4" type="submit">Edit Task!</button>
     </form>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"

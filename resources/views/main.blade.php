@@ -63,8 +63,8 @@
                                             <button type="button"
                                                     class="btn btn-sm btn-outline-secondary">{{ $task->user->name }}</button>
                                         @endif
-                                        @if($task->user->email == auth()->user()->email)
-                                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                        @if($task->user == auth()->user())
+                                                <button type="button" class="btn btn-sm btn-outline-secondary"><a style="text-decoration: none; text-decoration-color: gray" href="{{ route('task.edit', $task->id) }}">Edit</a></button>
                                         @endif
 
                                     </div>

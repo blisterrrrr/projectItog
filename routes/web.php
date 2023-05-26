@@ -24,6 +24,18 @@ Route::get('/', function () {
 Route::get('/create', function (){
     return view('create');
 })->name('create')->middleware('auth');
+Route::post('/create', function (){
+    $valid = request()->validate([
+        'name' => 'required|string',
+        'desc' => 'required'
+    ]);
+    $valid['user_id'] = auth()->user()->id;
+    $valid['important'] = 1;
+    Task::create($valid);
+    return redirect(\route('main'));
+})->name('post.create');
+Route::get('/task/edit/{id}', [\App\Http\Controllers\TaskController::class, 'index'])->name('task.edit');
+Route::post('/task/edit/{id}', [\App\Http\Controllers\TaskController::class, 'edit'])->name('post.edit');
 
 Route::get('/login', [\App\Http\Controllers\LoginController::class, 'index'])->middleware('guest')->name('login');
 Route::post('/login', [\App\Http\Controllers\LoginController::class, 'log'])->name('post.log');
