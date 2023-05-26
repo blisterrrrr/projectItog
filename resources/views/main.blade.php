@@ -27,8 +27,16 @@
             </form>
 
             <div class="text-end">
-                <button type="button" class="btn btn-outline-light me-2">Login</button>
-                <button type="button" class="btn btn-warning">Sign-up</button>
+                @guest()
+                    <button type="button" class="btn btn-outline-light me-2"><a
+                            style="text-decoration: none; color: white" href="{{ route('login') }}">Login</a></button>
+                    <button type="button" class="btn btn-warning"><a style="text-decoration: none; color: black"
+                                                                     href="{{ route('register') }}">Sign-up</a></button>
+                @endguest
+                @auth()
+                    <button type="button" class="btn btn-outline-light me-2"><a style="text-decoration: none; color: white" >{{ auth()->user()->name }}</a></button>
+                    <button type="button" class="btn btn-warning"><a style="text-decoration: none; color: black" href="{{ route('logout') }}">Log out</a></button>
+                    @endauth
             </div>
         </div>
     </div>
@@ -39,31 +47,38 @@
         <div class="container">
             <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
                 @foreach($tasks as $task)
-                <div class="col">
-                    <div class="card shadow-sm">
-                        <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
-                             xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
-                             preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
-                            <rect width="100%" height="100%" fill="#55595c"></rect>
-                            <text x="50%" y="50%" fill="#eceeef" dy=".3em"> {{ $task->name }} </text>
-                        </svg>
-                        <div class="card-body">
-                            <p class="card-text">{{ $task->desc }}</p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                                    <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    <div class="col">
+                        <div class="card shadow-sm">
+                            <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                                 xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                                 preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title>
+                                <rect width="100%" height="100%" fill="#55595c"></rect>
+                                <text x="50%" y="50%" fill="#eceeef" dy=".3em"> {{ $task->name }} </text>
+                            </svg>
+                            <div class="card-body">
+                                <p class="card-text">{{ $task->desc }}</p>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div class="btn-group">
+                                        @if($task->user != auth()->user())
+                                            <button type="button"
+                                                    class="btn btn-sm btn-outline-secondary">{{ $task->user->name }}</button>
+                                        @endif
+                                        @if($task->user->email == auth()->user()->email)
+                                                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                                        @endif
+
+                                    </div>
+                                    <small
+                                        class="text-body-secondary">{{ new \Carbon\Carbon($task->created_at) }}</small>
                                 </div>
-                                <small class="text-body-secondary">{{ new \Carbon\Carbon($task->created_at) }}</small>
                             </div>
                         </div>
                     </div>
-                </div>
                 @endforeach
             </div>
         </div>
     </div>
-{{$tasks->links()}}
+    {{$tasks->links()}}
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"

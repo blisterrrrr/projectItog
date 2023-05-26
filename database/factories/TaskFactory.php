@@ -14,6 +14,7 @@ class TaskFactory extends Factory
     {
         return [
             'name' => fake()->name(),
+            'user_id' => 1,
             'desc' => fake()->text(128),
             'important' => fake()->boolean(),
             'created_at' => Carbon::now(),

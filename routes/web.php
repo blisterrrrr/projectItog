@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Task;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    $tasks = \App\Models\Task::paginate(16);
+    $tasks = Task::orderBy('id', 'desc')->paginate(16);
     return view('main', [
         'tasks' => $tasks
     ]);
@@ -22,4 +23,11 @@ Route::get('/', function () {
 
 Route::get('/create', function (){
     return view('create');
-})->name('create');
+})->name('create')->middleware('auth');
+
+Route::get('/login', [\App\Http\Controllers\LoginController::class, 'index'])->middleware('guest')->name('login');
+Route::post('/login', [\App\Http\Controllers\LoginController::class, 'log'])->name('post.log');
+Route::get('/logout', [\App\Http\Controllers\LoginController::class, 'logout'])->name('logout');
+
+Route::get('/register', [\App\Http\Controllers\RegisterController::class, 'index'])->middleware('guest')->name('register');
+Route::post('/register', [\App\Http\Controllers\RegisterController::class, 'save'])->name('post.reg');
