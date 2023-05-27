@@ -21,10 +21,10 @@ Route::get('/', function () {
     ]);
 })->name('main');
 
-Route::get('/create', function (){
+Route::get('/create', function () {
     return view('create');
 })->name('create')->middleware('auth');
-Route::post('/create', function (){
+Route::post('/create', function () {
     $valid = request()->validate([
         'name' => 'required|string',
         'desc' => 'required'
@@ -34,12 +34,27 @@ Route::post('/create', function (){
     Task::create($valid);
     return redirect(\route('main'));
 })->name('post.create');
-Route::get('/task/edit/{id}', [\App\Http\Controllers\TaskController::class, 'index'])->name('task.edit');
-Route::post('/task/edit/{id}', [\App\Http\Controllers\TaskController::class, 'edit'])->name('post.edit');
+Route::get(
+    '/task/edit/{id}',
+    [\App\Http\Controllers\TaskController::class, 'index']
+)->name('task.edit');
+Route::post(
+    '/task/edit/{id}',
+    [\App\Http\Controllers\TaskController::class, 'edit']
+)->name('post.edit');
 
-Route::get('/login', [\App\Http\Controllers\LoginController::class, 'index'])->middleware('guest')->name('login');
-Route::post('/login', [\App\Http\Controllers\LoginController::class, 'log'])->name('post.log');
-Route::get('/logout', [\App\Http\Controllers\LoginController::class, 'logout'])->name('logout');
+Route::get('/login', [\App\Http\Controllers\LoginController::class, 'index'])
+    ->middleware('guest')->name('login');
+Route::post('/login', [\App\Http\Controllers\LoginController::class, 'log'])
+    ->name('post.log');
+Route::get('/logout', [\App\Http\Controllers\LoginController::class, 'logout'])
+    ->name('logout');
 
-Route::get('/register', [\App\Http\Controllers\RegisterController::class, 'index'])->middleware('guest')->name('register');
-Route::post('/register', [\App\Http\Controllers\RegisterController::class, 'save'])->name('post.reg');
+Route::get(
+    '/register',
+    [\App\Http\Controllers\RegisterController::class, 'index']
+)->middleware('guest')->name('register');
+Route::post(
+    '/register',
+    [\App\Http\Controllers\RegisterController::class, 'save']
+)->name('post.reg');
